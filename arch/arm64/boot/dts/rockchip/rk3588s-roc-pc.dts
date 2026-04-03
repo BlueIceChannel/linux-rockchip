@@ -853,13 +853,6 @@
 	num-cs = <1>;
 };
 
-/* PMIC spi2 */
-&spi2 {
-	pinctrl-names = "default";
-	pinctrl-0 = <&spi2m2_cs0 &spi2m2_pins>;
-	num-cs = <1>;
-};
-
 &tsadc {
 	status = "okay";
 };
@@ -1074,13 +1067,6 @@
        regulator-state-mem {
                regulator-on-in-suspend;
 			   regulator-suspend-microvolt = <1800000>;
-       };
-};
-
-&vcc_1v8_s0{
-       regulator-state-mem {
-               regulator-on-in-suspend;
-               regulator-suspend-microvolt = <1800000>;
        };
 };
 
