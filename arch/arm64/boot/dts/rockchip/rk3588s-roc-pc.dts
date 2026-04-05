@@ -20,7 +20,7 @@
 #include "rk3588-linux.dtsi"
 
 / {
-	model = "ROC-RK3588S-PC V12(Linux)";
+	model = "ROC-RK3588S-PC V10(Linux)";
 	compatible = "firefly,roc-rk3588s-pc", "firefly,station-m3", "rockchip,rk3588";
 
 	adc_keys: adc-keys {
@@ -52,7 +52,7 @@
 		status = "okay";
 		compatible = "rockchip,multicodecs-card";
 		rockchip,card-name = "rockchip-es8388";
-		hp-det-gpio = <&gpio1 RK_PA6 GPIO_ACTIVE_LOW>;
+		hp-det-gpio = <&gpio1 RK_PA6 GPIO_ACTIVE_HIGH>;
 		hp-con-gpio = <&gpio1 RK_PA4 GPIO_ACTIVE_HIGH>;
 		hw-ver =<0x1>;
 		io-channels = <&saradc 5>;
@@ -82,7 +82,7 @@
 		#cooling-cells = <2>;
 		fan-supply = <&vcc12v_dcin>;
 		cooling-levels = <60 100 140 160 185 220 255>;
-		pwms = <&pwm11 0 50000 1>;
+		pwms = <&pwm11 0 50000 0>;
 	};
 
 	firefly_leds: leds {
