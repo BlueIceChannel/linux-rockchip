@@ -73,6 +73,7 @@
 #define RES_UP(x)		UPDATE(x, 7, 4)
 #define RES_DN(x)		UPDATE(x, 3, 0)
 #define DPHY_MC_ANA_CON1	0x030c
+#define DPDN_SWAP		BIT(12)
 #define DPHY_MC_ANA_CON2	0x0310
 #define HS_VREG_AMP_ICON(x)	UPDATE(x, 1, 0)
 #define DPHY_MC_TIME_CON0	0x0330
@@ -1633,6 +1634,13 @@ samsung_mipi_dphy_clk_lane_timing_init(struct samsung_mipi_dcphy *samsung)
 	if (lane_hs_rate >= 4500)
 		regmap_write(samsung->regmap, DPHY_MC_ANA_CON1, 0x0001);
 
+	/* Clock lane DP/DN swap */
+	if (samsung->lane_polarities[0]) {
+		regmap_update_bits(samsung->regmap, DPHY_MC_ANA_CON1,
+				   DPDN_SWAP, DPDN_SWAP);
+		dev_info(samsung->dev, "DCPHY: clock lane DP/DN swapped\n");
+	}
+
 	val = 0;
 	/*
 	 * Divide-by-2 Clock from Serial Clock. Use this when data rate is under
@@ -1693,6 +1701,25 @@ samsung_mipi_dphy_data_lane_timing_init(struct samsung_mipi_dcphy *samsung)
 		regmap_write(samsung->regmap, COMBO_MD2_ANA_CON1, 0x0001);
 		regmap_write(samsung->regmap, DPHY_MD3_ANA_CON1, 0x0001);
 	}
+
+	/* Data lane DP/DN swap */
+	if (samsung->lane_polarities[1])
+		regmap_update_bits(samsung->regmap, COMBO_MD0_ANA_CON1,
+				   DPDN_SWAP, DPDN_SWAP);
+	if (samsung->lane_polarities[2])
+		regmap_update_bits(samsung->regmap, COMBO_MD1_ANA_CON1,
+				   DPDN_SWAP, DPDN_SWAP);
+	if (samsung->lane_polarities[3])
+		regmap_update_bits(samsung->regmap, COMBO_MD2_ANA_CON1,
+				   DPDN_SWAP, DPDN_SWAP);
+	if (samsung->lane_polarities[4])
+		regmap_update_bits(samsung->regmap, DPHY_MD3_ANA_CON1,
+				   DPDN_SWAP, DPDN_SWAP);
+	if (samsung->lane_polarities[1] || samsung->lane_polarities[2] ||
+	    samsung->lane_polarities[3] || samsung->lane_polarities[4])
+		dev_info(samsung->dev, "DCPHY: data lanes DP/DN swapped [%d,%d,%d,%d]\n",
+			 samsung->lane_polarities[1], samsung->lane_polarities[2],
+			 samsung->lane_polarities[3], samsung->lane_polarities[4]);
 
 	val = 0;
 	/*
@@ -2464,6 +2491,22 @@ static int samsung_mipi_dcphy_probe(struct platform_device *pdev)
 	if (IS_ERR(phy)) {
 		dev_err(dev, "failed to create MIPI Dc-PHY\n");
 		return PTR_ERR(phy);
+	}
+
+	/* Parse optional lane polarity inversion: [clk, d0, d1, d2, d3] */
+	if (of_property_count_u32_elems(np, "lane-polarities") == 5) {
+		u32 polarities[5];
+
+		of_property_read_u32_array(np, "lane-polarities", polarities, 5);
+		samsung->lane_polarities[0] = !!polarities[0];
+		samsung->lane_polarities[1] = !!polarities[1];
+		samsung->lane_polarities[2] = !!polarities[2];
+		samsung->lane_polarities[3] = !!polarities[3];
+		samsung->lane_polarities[4] = !!polarities[4];
+		dev_info(dev, "DCPHY: lane-polarities [clk:%d d0:%d d1:%d d2:%d d3:%d]\n",
+			 samsung->lane_polarities[0], samsung->lane_polarities[1],
+			 samsung->lane_polarities[2], samsung->lane_polarities[3],
+			 samsung->lane_polarities[4]);
 	}
 
 	phy_set_drvdata(phy, samsung);

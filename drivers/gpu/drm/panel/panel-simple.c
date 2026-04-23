@@ -601,6 +601,8 @@ static int panel_simple_prepare(struct drm_panel *panel)
 	if (p->prepared)
 		return 0;
 
+	dev_info(panel->dev, "panel: preparing...\n");
+
 	err = panel_simple_regulator_enable(p);
 	if (err < 0) {
 		dev_err(panel->dev, "failed to enable supply: %d\n", err);
@@ -629,12 +631,16 @@ static int panel_simple_prepare(struct drm_panel *panel)
 				return -EINVAL;
 			}
 		} else {
-			if (p->dsi)
+			if (p->dsi) {
+				dev_info(panel->dev, "panel: sending DSI init sequence\n");
 				panel_simple_xfer_dsi_cmd_seq(p, p->desc->init_seq);
+			}
 		}
 	}
 
 	p->prepared = true;
+
+	dev_info(panel->dev, "panel: prepare done\n");
 
 	return 0;
 }
@@ -5132,11 +5138,17 @@ static int panel_simple_dsi_probe(struct mipi_dsi_device *dsi)
 	dsi->format = desc->format;
 	dsi->lanes = desc->lanes;
 
+	dev_info(dev, "simple-panel-dsi: probed, %d lanes, format %d, flags 0x%lx\n",
+		 dsi->lanes, dsi->format, dsi->mode_flags);
+
 	err = mipi_dsi_attach(dsi);
 	if (err) {
 		struct panel_simple *panel = mipi_dsi_get_drvdata(dsi);
 
+		dev_err(dev, "simple-panel-dsi: mipi_dsi_attach failed: %d\n", err);
 		drm_panel_remove(&panel->base);
+	} else {
+		dev_info(dev, "simple-panel-dsi: attached to DSI host\n");
 	}
 
 	return err;

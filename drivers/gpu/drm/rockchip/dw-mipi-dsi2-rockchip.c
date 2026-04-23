@@ -1417,6 +1417,9 @@ static int dw_mipi_dsi2_get_dsc_params_from_sink(struct dw_mipi_dsi2 *dsi2,
 	dsi2->dsc_enable = dsi2->pdata->dsc ?
 			   of_property_read_bool(np, "compressed-data") : false;
 
+	dev_info(dsi2->dev, "DSI2: panel detected, c_option=%d scrambling=%d dsc=%d\n",
+		 dsi2->c_option, dsi2->scrambling_en, dsi2->dsc_enable);
+
 	if (dsi2->slave) {
 		dsi2->slave->c_option = dsi2->c_option;
 		dsi2->slave->scrambling_en = dsi2->scrambling_en;
@@ -1431,7 +1434,15 @@ static int dw_mipi_dsi2_get_dsc_params_from_sink(struct dw_mipi_dsi2 *dsi2,
 	of_property_read_u8(np, "version-major", &dsi2->version_major);
 	of_property_read_u8(np, "version-minor", &dsi2->version_minor);
 
+	dev_info(dsi2->dev, "DSI2: DSC v%d.%d slice=%dx%d\n",
+		 dsi2->version_major, dsi2->version_minor,
+		 dsi2->slice_width, dsi2->slice_height);
+
 	data = of_get_property(np, "panel-init-sequence", &len);
+	if (!data)
+		return -EINVAL;
+
+	dev_info(dsi2->dev, "DSI2: panel-init-sequence found, %d bytes\n", len);
 	if (!data)
 		return -EINVAL;
 

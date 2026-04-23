@@ -59,6 +59,7 @@ struct samsung_mipi_dcphy {
 	bool c_option;
 
 	unsigned int lanes;
+	bool lane_polarities[5];
 
 	const struct samsung_mipi_dcphy_plat_data *pdata;
 	struct {

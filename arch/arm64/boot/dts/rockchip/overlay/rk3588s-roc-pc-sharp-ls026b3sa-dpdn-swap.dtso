@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
- * Sharp LS026B3SA 2160x2160 90Hz DSI panel for ROC-RK3588S-PC
- * Uses simple-panel-dsi with DSC compression
+ * Sharp LS026B3SA 2160x2160 90Hz DSI panel overlay for ROC-RK3588S-PC
+ * DSI0 via VP3, simple-panel-dsi with DSC, with lane polarity inversion (DP/DN swap)
  */
+
+/dts-v1/;
+/plugin/;
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/rockchip.h>
 #include <dt-bindings/display/drm_mipi_dsi.h>
 
-/ {
-	backlight: backlight {
-		status = "okay";
+&{/} {
+	backlight_sharp: backlight-sharp {
 		compatible = "pwm-backlight";
 		enable-gpios = <&gpio3 RK_PD4 GPIO_ACTIVE_HIGH>;
 		pwms = <&pwm14 0 50000 1>;
@@ -54,6 +56,7 @@
 
 &mipi_dcphy0 {
 	status = "okay";
+	lane-polarities = <1 1 1 1 1>;
 };
 
 &dsi0_in_vp2 {
@@ -72,11 +75,10 @@
 &dsi0 {
 	status = "okay";
 
-	dsi_panel: panel@0 {
-		status = "okay";
+	panel@0 {
 		compatible = "simple-panel-dsi";
 		reg = <0>;
-		backlight = <&backlight>;
+		backlight = <&backlight_sharp>;
 
 		enable-gpios = <&gpio1 RK_PB3 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
@@ -144,7 +146,7 @@
 			05 78 01 10
 		];
 
-		disp_timings0: display-timings {
+		display-timings {
 			native-mode = <&dsi_timing0>;
 			dsi_timing0: timing0 {
 				clock-frequency = <453966750>;
