@@ -640,6 +640,25 @@ static int panel_simple_prepare(struct drm_panel *panel)
 
 	p->prepared = true;
 
+	/* Read back panel status after init */
+	if (p->dsi) {
+		u8 power_mode = 0, display_id[3] = {0};
+		int ret;
+
+		ret = mipi_dsi_dcs_get_power_mode(p->dsi, &power_mode);
+		if (ret < 0)
+			dev_warn(panel->dev, "panel: failed to read power mode: %d\n", ret);
+		else
+			dev_info(panel->dev, "panel: power_mode=0x%02x\n", power_mode);
+
+		ret = mipi_dsi_dcs_read(p->dsi, 0x04, display_id, 3);
+		if (ret < 0)
+			dev_warn(panel->dev, "panel: failed to read display ID: %d\n", ret);
+		else
+			dev_info(panel->dev, "panel: display ID=%02x %02x %02x\n",
+				 display_id[0], display_id[1], display_id[2]);
+	}
+
 	dev_info(panel->dev, "panel: prepare done\n");
 
 	return 0;
