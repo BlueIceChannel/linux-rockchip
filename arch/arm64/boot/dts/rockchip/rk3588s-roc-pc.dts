@@ -18,6 +18,7 @@
 #include "rk3588s.dtsi"
 #include "rk3588-rk806-single.dtsi"
 #include "rk3588-linux.dtsi"
+#include "rk3588s-roc-pc-sharp-ls026b3sa.dtsi"
 
 / {
 	model = "ROC-RK3588S-PC V10(Linux)";
