@@ -1452,6 +1452,8 @@ static int dw_mipi_dsi2_get_dsc_params_from_sink(struct dw_mipi_dsi2 *dsi2,
 
 	while (len > sizeof(*header)) {
 		header = (struct cmd_header *)d;
+		dev_info(dsi2->dev, "DSI2: init cmd type=0x%02x delay=%d len=%d remaining=%d\n",
+			 header->cmd_type, header->delay, header->payload_length, len);
 		d += sizeof(*header);
 		len -= sizeof(*header);
 
@@ -1459,6 +1461,8 @@ static int dw_mipi_dsi2_get_dsc_params_from_sink(struct dw_mipi_dsi2 *dsi2,
 			return -EINVAL;
 
 		if (header->cmd_type == MIPI_DSI_PICTURE_PARAMETER_SET) {
+			dev_info(dsi2->dev, "DSI2: found PPS packet, %d bytes\n",
+				 header->payload_length);
 			dsc_packed_pps = devm_kmemdup(dsi2->dev, d,
 						      header->payload_length, GFP_KERNEL);
 			if (!dsc_packed_pps)
