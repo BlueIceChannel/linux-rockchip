@@ -188,7 +188,7 @@
 		display-timings {
 			native-mode = <&dsi_timing0>;
 			dsi_timing0: timing0 {
-				clock-frequency = <453966750>;
+				clock-frequency = <151500000>;
 				hactive = <2160>;
 				vactive = <2160>;
 				hfront-porch = <54>;
