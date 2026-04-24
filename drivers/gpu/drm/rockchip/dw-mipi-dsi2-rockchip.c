@@ -1477,8 +1477,21 @@ static int dw_mipi_dsi2_get_dsc_params_from_sink(struct dw_mipi_dsi2 *dsi2,
 	}
 
 	if (!pps) {
-		dev_err(dsi2->dev, "not found dsc pps definition\n");
-		return -EINVAL;
+		/* Fallback: read PPS from dedicated DT property */
+		const void *pps_data;
+		int pps_len;
+
+		pps_data = of_get_property(np, "rockchip,dsc-pps", &pps_len);
+		if (pps_data && pps_len >= sizeof(struct drm_dsc_picture_parameter_set)) {
+			dsc_packed_pps = devm_kmemdup(dsi2->dev, pps_data, pps_len, GFP_KERNEL);
+			if (!dsc_packed_pps)
+				return -ENOMEM;
+			pps = (struct drm_dsc_picture_parameter_set *)dsc_packed_pps;
+			dev_info(dsi2->dev, "DSI2: PPS loaded from rockchip,dsc-pps property (%d bytes)\n", pps_len);
+		} else {
+			dev_err(dsi2->dev, "not found dsc pps definition\n");
+			return -EINVAL;
+		}
 	}
 
 	dsi2->pps = pps;
