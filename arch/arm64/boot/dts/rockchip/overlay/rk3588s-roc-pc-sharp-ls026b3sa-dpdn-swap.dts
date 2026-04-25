@@ -91,7 +91,7 @@
 		unprepare-delay-ms = <120>;
 		width-mm = <46>;
 		height-mm = <46>;
-		dsi,flags = <0x803>;
+		dsi,flags = <0x801>;
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes = <4>;
 
@@ -175,8 +175,8 @@
 			15 00 02 36 40
 			15 00 02 26 01
 			15 00 02 03 01
-			05 78 01 29
 			05 78 01 11
+			05 78 01 29
 		];
 
 		panel-exit-sequence = [
