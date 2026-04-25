@@ -74,6 +74,7 @@
 
 &dsi0 {
 	status = "okay";
+	rockchip,lane-rate = <1000>;
 
 	panel@0 {
 		compatible = "simple-panel-dsi";
@@ -187,13 +188,13 @@
 		display-timings {
 			native-mode = <&dsi_timing0>;
 			dsi_timing0: timing0 {
-				clock-frequency = <453966750>;
+				clock-frequency = <455000000>;
 				hactive = <2160>;
 				vactive = <2160>;
-				hfront-porch = <54>;
-				hsync-len = <20>;
-				hback-porch = <33>;
-				vfront-porch = <57>;
+				hfront-porch = <56>;
+				hsync-len = <24>;
+				hback-porch = <32>;
+				vfront-porch = <56>;
 				vsync-len = <4>;
 				vback-porch = <4>;
 				hsync-active = <0>;
