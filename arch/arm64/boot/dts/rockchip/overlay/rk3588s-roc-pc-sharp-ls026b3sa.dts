@@ -54,7 +54,7 @@
 	};
 };
 
-&mipi_dcphy0 {
+&mipidcphy0 {
 	status = "okay";
 };
 
