@@ -74,7 +74,7 @@
 
 &dsi0 {
 	status = "okay";
-	rockchip,lane-rate = <1000>;
+	rockchip,lane-rate = <1100>;
 
 	panel@0 {
 		compatible = "simple-panel-dsi";
@@ -97,6 +97,7 @@
 		dsi,lanes = <4>;
 
 		compressed-data;
+		blk-pred-enable;
 		slice-width = <540>;
 		slice-height = <16>;
 		version-major = /bits/ 8 <1>;
@@ -173,11 +174,15 @@
 				00 00 00 00 00 00 00 00
 				00 00 00 00 00 00 00 00
 			15 00 02 35 00
-			15 00 02 36 40
+			15 00 02 36 01
 			15 00 02 26 01
 			15 00 02 03 01
 			05 78 01 11
 			05 78 01 29
+			/* Secondary init: panel internal config */
+			15 00 02 b0 00
+			15 00 02 b3 81
+			15 00 02 b0 03
 		];
 
 		panel-exit-sequence = [
@@ -188,13 +193,13 @@
 		display-timings {
 			native-mode = <&dsi_timing0>;
 			dsi_timing0: timing0 {
-				clock-frequency = <455000000>;
+				clock-frequency = <454000000>;
 				hactive = <2160>;
 				vactive = <2160>;
-				hfront-porch = <56>;
-				hsync-len = <24>;
-				hback-porch = <32>;
-				vfront-porch = <56>;
+				hfront-porch = <54>;
+				hsync-len = <20>;
+				hback-porch = <33>;
+				vfront-porch = <57>;
 				vsync-len = <4>;
 				vback-porch = <4>;
 				hsync-active = <0>;
