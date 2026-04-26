@@ -124,37 +124,31 @@
 
 		panel-init-sequence = [
 			/*
-			 * Panel init commands use Generic write types (0x13/0x29)
-			 * to match Pico firmware, which sends vendor-specific
-			 * registers (B0,B9,EC,D6,D2,BE,F1,D1,C2,B6,E6,B3) as
-			 * GENERIC_LONG_WRITE/GENERIC_SHORT_WRITE_1_PARAM rather
-			 * than DCS packet types.  The NT57900 DDIC ignores DCS
-			 * writes to vendor registers.
+			 * Pico uses GENERIC_LONG_WRITE (0x29) for all vendor-
+			 * specific registers (B0,B3,B6,B9,BE,C2,D1,D2,D6,EC,
+			 * E5,E6,F1) and standard DCS types (0x15/0x39/0x05)
+			 * for standard DCS commands (03,11,26,29,35,36).
 			 *
-			 * Standard DCS commands (35,36,26,03,11,29) keep DCS
-			 * types (0x15/0x05) — the framework selects the exact
-			 * short/long subtype from the payload length.
-			 *
-			 * VOP2 DSC encoder PPS is provided via rockchip,dsc-pps
-			 * DT property; no 0x0A PPS packet is sent to the panel
-			 * since Pico sends PPS only through DCS register 0xE6.
+			 * The VOP2 DSC encoder gets its PPS from the
+			 * rockchip,dsc-pps DT property; no 0x0A PPS packet
+			 * is sent to the panel (Pico uses DCS register 0xE6
+			 * exclusively for PPS delivery).
 			 */
-			/* Vendor config: generic short writes (0x13) */
-			13 00 02 b0 00
-			/* Vendor config: generic long writes (0x29) */
+			/* Pico on-command: vendor config */
+			29 00 02 b0 00
 			29 00 05 b9 13 5f 02 64
 			29 00 03 ec 06 48
 			29 00 03 ec 05 d8
-			13 00 02 d6 00
-			13 00 02 d2 0e
+			29 00 02 d6 00
+			29 00 02 d2 0e
 			29 00 03 be 00 0d
-			13 00 02 f1 18
+			29 00 02 f1 18
 			29 00 05 d1 09 30 03 09
-			13 00 02 f1 1a
-			13 00 02 c2 07
-			13 00 02 f1 08
-			13 00 02 b6 60
-			/* DSC PPS to panel via vendor register 0xE6 (generic long) */
+			29 00 02 f1 1a
+			29 00 02 c2 07
+			29 00 02 f1 08
+			29 00 02 b6 60
+			/* Pico on-command: PPS via DCS 0xE6 (generic long) */
 			29 00 81 e6
 				11 00 00 89 30 80 08 70
 				08 70 00 10 02 1c 02 1c
@@ -172,17 +166,26 @@
 				00 00 00 00 00 00 00 00
 				00 00 00 00 00 00 00 00
 				00 00 00 00 00 00 00 00
-			/* Standard DCS commands (keep DCS types) */
+			/* Pico on-command: standard DCS */
 			15 00 02 35 00
 			15 00 02 36 01
 			15 00 02 26 01
 			15 00 02 03 01
 			05 78 01 11
 			05 78 01 29
-			/* Secondary init (Pico on-sec-command): generic shorts */
-			13 00 02 b0 00
-			13 00 02 b3 81
-			13 00 02 b0 03
+			/* Pico on-sec-command */
+			29 00 02 b0 00
+			29 00 02 b3 81
+			29 32 02 b0 03
+			/* Pico post-90-nt57900-on-command: calibration for 90 Hz */
+			29 00 02 b0 00
+			29 00 02 e5 07
+			29 00 05 b9 13 5f 02 64
+			29 00 03 ec 06 48
+			29 00 07 d5 00 00 00 00 00 00
+			29 00 05 b9 13 5f 02 64
+			29 00 03 ec 05 d8
+			29 00 07 d5 00 00 00 00 00 00
 		];
 
 		panel-exit-sequence = [
