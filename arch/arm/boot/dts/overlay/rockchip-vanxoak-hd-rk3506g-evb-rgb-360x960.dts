@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2024 Rockchip Electronics Co., Ltd.
+ * GC9503CV RGB panel with SPI init, 360x960
  */
 
 /dts-v1/;
@@ -8,9 +9,17 @@
 
 #include <dt-bindings/display/media-bus-format.h>
 
-&{/} {
-	panel: panel {
-		compatible = "simple-panel";
+&spi0 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&rm_io4_spi0_clk &rm_io5_spi0_mosi>;
+	spi-3wire;
+
+	panel: panel@0 {
+		compatible = "simple-panel-spi";
+		reg = <0>;
+		spi-max-frequency = <3000000>;
+		spi-3wire;
 		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
 		status = "okay";
 
@@ -21,12 +30,12 @@
 				clock-frequency = <30000000>;
 				hactive = <360>;
 				vactive = <960>;
-				hback-porch = <5>;
-				hfront-porch = <6>;
-				vback-porch = <10>;
-				vfront-porch = <5>;
-				hsync-len = <5>;
-				vsync-len = <8>;
+				hback-porch = <20>;
+				hfront-porch = <20>;
+				vback-porch = <20>;
+				vfront-porch = <32>;
+				hsync-len = <8>;
+				vsync-len = <2>;
 				hsync-active = <0>;
 				vsync-active = <0>;
 				de-active = <0>;
@@ -34,53 +43,6 @@
 			};
 		};
 
-		port {
-			panel_in_rgb: endpoint {
-				remote-endpoint = <&rgb_out_panel>;
-			};
-		};
+/* PLACEHOLDER_INIT_SEQ */
 	};
-};
-
-&rgb {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&rgb666_pins>;
-
-	ports {
-		rgb_out: port@1 {
-			reg = <1>;
-			#address-cells = <1>;
-			#size-cells = <0>;
-
-			rgb_out_panel: endpoint@0 {
-				reg = <0>;
-				remote-endpoint = <&panel_in_rgb>;
-			};
-		};
-	};
-};
-
-&display_subsystem {
-	status = "okay";
-};
-
-&vop {
-	status = "okay";
-};
-
-&dsi_in_vop {
-	status = "disabled";
-};
-
-&rgb_in_vop {
-	status = "okay";
-};
-
-&route_dsi {
-	status = "disabled";
-};
-
-&route_rgb {
-	status = "okay";
 };
