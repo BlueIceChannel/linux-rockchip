@@ -23,26 +23,6 @@
 		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
 		status = "okay";
 
-		display-timings {
-			native-mode = <&rgb_timing>;
-
-			rgb_timing: timing0 {
-				clock-frequency = <30000000>;
-				hactive = <360>;
-				vactive = <960>;
-				hback-porch = <20>;
-				hfront-porch = <20>;
-				vback-porch = <20>;
-				vfront-porch = <32>;
-				hsync-len = <8>;
-				vsync-len = <2>;
-				hsync-active = <0>;
-				vsync-active = <0>;
-				de-active = <0>;
-				pixelclk-active = <0>;
-			};
-		};
-
 		panel-init-sequence = [
 			00 00 01 F0
 			01 00 05 55 AA 52 08 00
@@ -172,6 +152,25 @@
 			00 78 01 10
 		];
 
+		display-timings {
+			native-mode = <&rgb_timing>;
+
+			rgb_timing: timing0 {
+				clock-frequency = <30000000>;
+				hactive = <360>;
+				vactive = <960>;
+				hback-porch = <20>;
+				hfront-porch = <20>;
+				vback-porch = <20>;
+				vfront-porch = <32>;
+				hsync-len = <8>;
+				vsync-len = <2>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <0>;
+				pixelclk-active = <0>;
+			};
+		};
 
 		port {
 			panel_in_rgb: endpoint {
