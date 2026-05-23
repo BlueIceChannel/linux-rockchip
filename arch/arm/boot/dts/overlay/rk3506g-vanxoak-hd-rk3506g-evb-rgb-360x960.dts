@@ -3,6 +3,9 @@
  * Copyright (c) 2024 Rockchip Electronics Co., Ltd.
  */
 
+/dts-v1/;
+/plugin/;
+
 #include <dt-bindings/display/media-bus-format.h>
 
 / {
