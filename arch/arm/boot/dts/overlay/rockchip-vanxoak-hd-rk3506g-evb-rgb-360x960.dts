@@ -13,13 +13,11 @@
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&rm_io4_spi0_clk &rm_io5_spi0_mosi>;
-	spi-3wire;
 
 	panel: panel@0 {
 		compatible = "simple-panel-spi";
 		reg = <0>;
 		spi-max-frequency = <3000000>;
-		spi-3wire;
 		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
 		status = "okay";
 
