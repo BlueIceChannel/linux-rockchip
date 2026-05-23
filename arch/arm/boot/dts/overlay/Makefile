@@ -14,7 +14,7 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rockchip-luckfox-lyra-zero-w-spi1-2cs-spidev.dtbo \
 	rockchip-rk3506-disable-ethernet0.dtbo \
 	rockchip-rk3506-disable-ethernet1.dtbo \
-	rk3506g-vanxoak-hd-rk3506g-evb-rgb-360x960.dtbo
+	rockchip-vanxoak-hd-rk3506g-evb-rgb-360x960.dtbo
 dtbotxt-$(CONFIG_ARCH_ROCKCHIP) += \
 	README.rockchip-overlays
 
