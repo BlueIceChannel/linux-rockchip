@@ -110,6 +110,6 @@
 	status = "disabled";
 };
 
-&cma {
+&{/reserved-memory/linux,cma} {
 	size = <0x1600000>;
 };
