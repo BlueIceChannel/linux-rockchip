@@ -12,24 +12,6 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 
 &{/} {
-	reserved-memory {
-		#address-cells = <1>;
-		#size-cells = <1>;
-		ranges;
-
-		drm_logo: drm-logo@400000 {
-			compatible = "rockchip,drm-logo";
-			reg = <0x400000 0x100000>;
-		};
-
-		cma: linux,cma {
-			compatible = "shared-dma-pool";
-			reusable;
-			reg = <0x04000000 0x800000>;
-			linux,cma-default;
-		};
-	};
-
 	panel: panel {
 		compatible = "simple-panel";
 		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
@@ -126,4 +108,8 @@
 
 &pwm0_4ch_2 {
 	status = "disabled";
+};
+
+&cma {
+	size = <0x1600000>;
 };
