@@ -8,20 +8,27 @@
 /plugin/;
 
 #include <dt-bindings/display/media-bus-format.h>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/rockchip.h>
 
-&spi0 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&rm_io4_spi0_clk &rm_io5_spi0_mosi>;
-
-	panel: panel@0 {
-		compatible = "simple-panel-spi";
-		reg = <0>;
-		spi-max-frequency = <3000000>;
-		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
+&{/} {
+	spi_panel: spi-panel {
+		compatible = "spi-gpio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		gpio-sck = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+		gpio-mosi = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
+		num-chipselects = <0>;
 		status = "okay";
 
-		panel-init-sequence = [
+		panel: panel@0 {
+			compatible = "simple-panel-spi";
+			reg = <0>;
+			spi-max-frequency = <100000>;
+			bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
+			status = "okay";
+
+			panel-init-sequence = [
 			00 00 01 F0
 			01 00 05 55 AA 52 08 00
 			00 00 01 F6
@@ -175,6 +182,7 @@
 				remote-endpoint = <&rgb_out_panel>;
 			};
 		};
+	};
 	};
 };
 
