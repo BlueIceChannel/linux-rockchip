@@ -12,150 +12,10 @@
 #include <dt-bindings/pinctrl/rockchip.h>
 
 &{/} {
-	spi_panel: spi-panel {
-		compatible = "spi-gpio";
-		#address-cells = <1>;
-		#size-cells = <0>;
-		gpio-sck = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
-		gpio-mosi = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
-		num-chipselects = <0>;
+	panel: panel {
+		compatible = "simple-panel";
+		bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
 		status = "okay";
-
-		panel: panel@0 {
-			compatible = "simple-panel-spi";
-			reg = <0>;
-			spi-max-frequency = <100000>;
-			bus-format = <MEDIA_BUS_FMT_RGB666_1X18>;
-			status = "okay";
-
-			panel-init-sequence = [
-			00 00 01 F0
-			01 00 05 55 AA 52 08 00
-			00 00 01 F6
-			01 00 02 5A 87
-			00 00 01 C1
-			01 00 01 3F
-			00 00 01 CD
-			01 00 01 25
-			00 00 01 C9
-			01 00 01 10
-			00 00 01 F8
-			01 00 01 8A
-			00 00 01 AC
-			01 00 01 45
-			00 00 01 A7
-			01 00 01 47
-			00 00 01 A0
-			01 00 01 CC
-			00 00 01 86
-			01 00 04 99 A3 A3 31
-			00 00 01 FA
-			01 00 04 08 08 00 04
-			00 00 01 A3
-			01 00 01 6E
-			00 00 01 FD
-			01 00 03 28 3C 00
-			00 00 01 9A
-			01 00 01 4A
-			00 00 01 9B
-			01 00 01 22
-			00 00 01 82
-			01 00 02 00 00
-			00 00 01 80
-			01 00 01 4A
-			00 00 01 B1
-			01 00 01 30
-			00 00 01 7A
-			01 00 02 0F 13
-			00 00 01 7B
-			01 00 02 0F 13
-			00 00 01 6D
-			01 00 20 03 03 1E 02 08 1A 19 0D
-				  11 12 13 14 1E 1E 1E 1E
-				  1E 1E 1E 1E 0C 0B 0A 09
-				  0D 19 1A 07 01 1E 03 03
-			00 00 01 64
-			01 00 10 38 04 03 C4 03 03 38 02
-				  03 C6 03 03 2C 7A 2C 7A
-			00 00 01 65
-			01 00 10 38 08 03 C0 03 03 38 06
-				  03 C2 03 03 2C 7A 2C 7A
-			00 00 01 66
-			01 00 10 83 D0 03 C4 03 03 83 D0
-				  03 C4 03 03 2C 7A 2C 7A
-			00 00 01 60
-			01 00 08 38 0C 3C 3C 38 0B 3C 3C
-			00 00 01 61
-			01 00 08 B3 C4 3C 3C B3 C4 3C 3C
-			00 00 01 62
-			01 00 08 B3 C4 3C 3C B3 C4 3C 3C
-			00 00 01 63
-			01 00 08 38 0A 3C 3C 38 09 3C 3C
-			00 00 01 68
-			01 00 0D 77 08 0A 08 09 00 00 18
-				  0A 08 09 00 00
-			00 00 01 69
-			01 00 07 14 22 14 22 44 22 08
-			00 00 01 6B
-			01 00 01 07
-			00 00 01 D1
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 D2
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 D3
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 D4
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 D5
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 D6
-			01 00 34 00 00 00 10 00 22 00 2C
-				  00 2E 00 56 00 58 00 7C
-				  00 9A 00 CE 00 FA 01 4C
-				  01 94 01 96 01 DA 02 32
-				  02 76 02 CC 03 18 03 55
-				  03 6B 03 9B 03 AC 03 B8
-				  03 E0 03 FF
-			00 00 01 3A
-			01 00 01 66
-			00 78 01 11
-			00 14 01 29
-		];
-
-		panel-exit-sequence = [
-			00 14 01 28
-			00 78 01 10
-		];
 
 		display-timings {
 			native-mode = <&rgb_timing>;
@@ -183,6 +43,21 @@
 			};
 		};
 	};
+
+	spi_init: spi-init {
+		compatible = "spi-gpio";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		gpio-sck = <&gpio0 RK_PA0 GPIO_ACTIVE_HIGH>;
+		gpio-mosi = <&gpio0 RK_PA2 GPIO_ACTIVE_HIGH>;
+		num-chipselects = <0>;
+		status = "okay";
+
+		spidev@0 {
+			compatible = "linux,spidev";
+			reg = <0>;
+			spi-max-frequency = <100000>;
+		};
 	};
 };
 
