@@ -110,6 +110,15 @@
 	status = "disabled";
 };
 
+&gpio0 {
+	panel_cs_hog: panel-cs-hog {
+		gpio-hog;
+		gpios = <RK_PB7 GPIO_ACTIVE_LOW>;
+		output-low;
+		line-name = "gc9503cv-cs";
+	};
+};
+
 &{/reserved-memory/linux,cma} {
 	size = <0x1600000>;
 };
